@@ -1,18 +1,18 @@
 import { Box, Container, Grid, Paper } from "@mui/material";
-import tempVideo from "../assets/torrikk3.mp4";
-function VideoBox() {
+function VideoBox({ video }) {
   return (
     <Grid
       container
       sx={{
         display: "flex",
+        position: "relative",
         flexDirection: "column",
-        flexWrap: "initial",
+        flexWrap: "nowrap",
         alignItems: "flex-start",
         backgroundColor: "rgba(99, 99, 99, 0.14)",
         border: "3px solid rgba(175, 175, 175, 0.12)",
         width: "50vh",
-        gap: "1rem",
+        height: "50vh",
       }}
     >
       <Grid
@@ -21,12 +21,13 @@ function VideoBox() {
           width: "100%",
           display: "inline-block",
           textAlign: "left",
-          fontSize: "2rem",
+          fontSize: "5.0vh",
+          flex: "1 1 auto",
           paddingLeft: "5%",
           wordWrap: "break-word",
         }}
       >
-        Title
+        {video.title}
       </Grid>
       <Grid
         sx={{
@@ -34,32 +35,35 @@ function VideoBox() {
           width: "100%",
           display: "inline-block",
           textAlign: "left",
-          fontSize: "1rem",
+          fontSize: "2.5vh",
+          flex: "1 1 auto",
           paddingLeft: "5%",
           wordWrap: "break-word",
         }}
       >
-        Description
+        {video.description}
       </Grid>
       <Grid
         sx={{
           position: "relative",
           width: "100%",
           display: "flex",
-          alignItems: "left",
+          justifyContent: "center",
+          flex: "1 1 auto",
+          objectFit: "scale-down",
         }}
       >
         <video
           muted
           controls
           style={{
-            display: "flex",
+            display: "inline-block",
             width: "90%",
-            margin: "auto",
-            alignSelf: "flex-start",
+            flexShrink: "1",
+            position: "relative",
           }}
           autoPlay
-          src={tempVideo}
+          src={video.src}
         ></video>
       </Grid>
     </Grid>

@@ -6,6 +6,6 @@ import VideoBox from "./components/VideoBox.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <VideoBox />
+    <App />
   </StrictMode>
 );
