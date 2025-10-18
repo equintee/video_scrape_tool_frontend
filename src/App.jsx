@@ -5,6 +5,7 @@ import tempVideo from "./assets/torrikk3.mp4";
 import "./App.css";
 import VideoBox from "./components/VideoBox";
 import { Box, Container, Grid, Paper } from "@mui/material";
+import VideoFilter from "./components/VideoFilter";
 
 function App() {
   function mockVideoBox() {
@@ -42,20 +43,16 @@ function App() {
   }
 
   return (
-    <>
-      <Grid
-        container
-        sx={{
-          display: "flex",
-          position: "relative",
-          flexDirection: "column",
-          alignItems: "center",
-          rowGap: 2,
-        }}
-      >
+    <Grid container display={"flex"} flexDirection={"column"} gap={"2vh"}>
+      <Grid container>
+        <Grid item>
+          <VideoFilter></VideoFilter>
+        </Grid>
+      </Grid>
+      <Grid container display={"flex"} flexDirection={"column"} gap={"2vh"}>
         {mockVideoBox()}
       </Grid>
-    </>
+    </Grid>
   );
 }
 
