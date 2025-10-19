@@ -6,53 +6,36 @@ import "./App.css";
 import VideoBox from "./components/VideoBox";
 import { Box, Container, Grid, Paper } from "@mui/material";
 import VideoFilter from "./components/VideoFilter";
+import { useVideoProvider, VideoProvider } from "./providers/VideoProvider";
 
 function App() {
-  function mockVideoBox() {
+  function VideoList() {
+    const { videos, setVideos } = useVideoProvider();
+
     return (
       <>
-        <Grid item>
-          <VideoBox
-            video={{
-              title: "Sample Video",
-              description: "This is a sample video description.",
-              src: tempVideo,
-            }}
-          />
-        </Grid>
-        <Grid item>
-          <VideoBox
-            video={{
-              title: "Sample Video",
-              description: "This is a sample video description.",
-              src: tempVideo,
-            }}
-          />
-        </Grid>
-        <Grid item>
-          <VideoBox
-            video={{
-              title: "Sample Video",
-              description: "This is a sample video description.",
-              src: tempVideo,
-            }}
-          />
-        </Grid>
+        {videos.map((video, index) => (
+          <Grid item key={index}>
+            <VideoBox video={video} />
+          </Grid>
+        ))}
       </>
     );
   }
 
   return (
-    <Grid container display={"flex"} flexDirection={"column"} gap={"2vh"}>
-      <Grid container>
-        <Grid item>
-          <VideoFilter></VideoFilter>
+    <VideoProvider>
+      <Grid container display={"flex"} flexDirection={"column"} gap={"2vh"}>
+        <Grid container>
+          <Grid item>
+            <VideoFilter></VideoFilter>
+          </Grid>
+        </Grid>
+        <Grid container display={"flex"} flexDirection={"column"} gap={"2vh"}>
+          <VideoList />
         </Grid>
       </Grid>
-      <Grid container display={"flex"} flexDirection={"column"} gap={"2vh"}>
-        {mockVideoBox()}
-      </Grid>
-    </Grid>
+    </VideoProvider>
   );
 }
 
