@@ -1,17 +1,13 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import tempVideo from "./assets/torrikk3.mp4";
 import "./App.css";
 import VideoBox from "./components/VideoBox";
 import { Box, Container, Grid, Paper } from "@mui/material";
 import VideoFilter from "./components/VideoFilter";
 import { useVideoProvider, VideoProvider } from "./providers/VideoProvider";
+import { TagProvider, useTagProvider } from "./providers/TagProvider";
 
 function App() {
   function VideoList() {
     const { videos, setVideos } = useVideoProvider();
-
     if (!videos) {
       return;
     }
@@ -32,7 +28,9 @@ function App() {
       <Grid container display={"flex"} flexDirection={"column"} gap={"2vh"}>
         <Grid container>
           <Grid item>
-            <VideoFilter></VideoFilter>
+            <TagProvider>
+              <VideoFilter></VideoFilter>
+            </TagProvider>
           </Grid>
         </Grid>
         <Grid container display={"flex"} flexDirection={"column"} gap={"2vh"}>

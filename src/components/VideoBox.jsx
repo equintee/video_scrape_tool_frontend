@@ -23,23 +23,9 @@ function VideoBox({ video }) {
           width: "100%",
           display: "inline-block",
           textAlign: "left",
-          fontSize: "5.0vh",
-          flex: "1 1 auto",
-          paddingLeft: "5%",
-          wordWrap: "break-word",
-        }}
-      >
-        {video.title}
-      </Grid>
-      <Grid
-        sx={{
-          position: "relative",
-          width: "100%",
-          display: "inline-block",
-          textAlign: "left",
           fontSize: "2.5vh",
           flex: "1 1 auto",
-          paddingLeft: "5%",
+          paddingLeft: "1%",
           wordWrap: "break-word",
         }}
       >

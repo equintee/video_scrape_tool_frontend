@@ -2,25 +2,12 @@ import { FormLabel, Grid, Select } from "@mui/material";
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-
-const tagOptions = [
-  "Günay Güvenç",
-  "Kaan Ayhan",
-  "Davinson Sánchez",
-  "Carlos Cuesta",
-  "İsmail Jakobs",
-  "Kerem Aktürkoğlu",
-  "Dries Mertens",
-  "Berkan Kutlu",
-  "Przemysław Frankowski",
-  "Álvaro Morata",
-  "Ahmed Kutucu",
-];
+import { TagProvider, useTagProvider } from "../providers/TagProvider";
 
 function VideoFilter() {
   const [description, setDescription] = useState({});
   const [selectedTags, setSelectedTags] = useState([]);
-
+  const { tags, setTags } = useTagProvider();
   const handleTagChange = (event) => {
     const {
       target: { value },
@@ -55,7 +42,7 @@ function VideoFilter() {
           onChange={handleTagChange}
           sx={{ background: "#EFF3EC" }}
         >
-          {tagOptions.map((tag) => (
+          {tags.map((tag) => (
             <MenuItem key={tag} value={tag}>
               {tag}
             </MenuItem>
