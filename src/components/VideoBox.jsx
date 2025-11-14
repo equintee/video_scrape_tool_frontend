@@ -1,5 +1,8 @@
 import { Box, Container, Grid, Paper } from "@mui/material";
 function VideoBox({ video }) {
+  if (!video) {
+    return;
+  }
   return (
     <Grid
       container
@@ -12,7 +15,6 @@ function VideoBox({ video }) {
         backgroundColor: "rgba(99, 99, 99, 0.14)",
         border: "3px solid rgba(175, 175, 175, 0.12)",
         width: "50vh",
-        height: "50vh",
       }}
     >
       <Grid
@@ -47,22 +49,21 @@ function VideoBox({ video }) {
         sx={{
           position: "relative",
           width: "100%",
+          height: "80%",
           display: "flex",
           justifyContent: "center",
           flex: "1 1 auto",
-          objectFit: "scale-down",
         }}
       >
         <video
           muted
           controls
           style={{
-            display: "inline-block",
-            width: "90%",
-            flexShrink: "1",
-            position: "relative",
+            maxWidth: "100%",
+            width: "auto",
+            height: "auto",
+            objectFit: "contain",
           }}
-          autoPlay
           src={video.src}
         ></video>
       </Grid>

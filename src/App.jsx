@@ -12,6 +12,10 @@ function App() {
   function VideoList() {
     const { videos, setVideos } = useVideoProvider();
 
+    if (!videos) {
+      return;
+    }
+
     return (
       <>
         {videos.map((video, index) => (
