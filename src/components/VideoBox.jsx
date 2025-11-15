@@ -31,6 +31,34 @@ function VideoBox({ video }) {
       >
         {video.description}
       </Grid>
+      {video.tags ? (
+        <Grid
+          sx={{
+            position: "relative",
+            width: "100%",
+            display: "flex",
+            paddingLeft: "1%",
+            alignItems: "flex-start",
+            flexDirection: "row",
+          }}
+        >
+          {video.tags.map((tag) => (
+            <Grid
+              sx={{
+                display: "flex",
+                flex: "1 1 auto",
+                position: "relative",
+                textAlign: "left",
+                fontSize: "1.5vh",
+              }}
+            >
+              {tag}
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <></>
+      )}
       <Grid
         sx={{
           position: "relative",

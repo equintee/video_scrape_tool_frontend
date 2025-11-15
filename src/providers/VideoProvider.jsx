@@ -16,6 +16,7 @@ export const VideoProvider = ({ children }) => {
           temp.push({
             title: video.name,
             description: video.description,
+            tags: video.tags,
             src: "http://localhost:8080/chunk?contentId=" + video.content_url,
           });
           setVideos(temp);
