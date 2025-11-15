@@ -4,26 +4,6 @@ const VideoContext = createContext();
 
 export const VideoProvider = ({ children }) => {
   const [videos, setVideos] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:8080", {
-      method: "GET",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const temp = [];
-        data.forEach((video) => {
-          temp.push({
-            title: video.name,
-            description: video.description,
-            tags: video.tags,
-            src: "http://localhost:8080/chunk?contentId=" + video.content_url,
-          });
-          setVideos(temp);
-        });
-      });
-  }, []);
-
   return (
     <VideoContext.Provider value={{ videos, setVideos }}>
       {children}
