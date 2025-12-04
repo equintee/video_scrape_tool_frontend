@@ -32,6 +32,7 @@ function VideoFilter() {
             title: video.name,
             description: video.description,
             tags: video.tags,
+            song: video.song,
             src: "http://localhost:8080/chunk?contentId=" + video.content_url,
           });
         });

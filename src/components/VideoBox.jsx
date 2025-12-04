@@ -15,6 +15,7 @@ function VideoBox({ video }) {
         backgroundColor: "rgba(99, 99, 99, 0.14)",
         border: "3px solid rgba(175, 175, 175, 0.12)",
         width: "50vh",
+        rowGap: "1vh",
       }}
     >
       <Grid
@@ -45,11 +46,20 @@ function VideoBox({ video }) {
           {video.tags.map((tag) => (
             <Grid
               sx={{
-                display: "flex",
-                flex: "1 1 auto",
-                position: "relative",
-                textAlign: "left",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                px: "8px",
+                py: "2px",
+                marginRight: "6px",
+                color: "white",
+                backgroundColor: "transparent",
+                border: "1px solid rgba(255, 255, 255, 0.5)",
+                borderRadius: "20px",
                 fontSize: "1.5vh",
+                fontWeight: "600",
+                width: "auto",
+                height: "auto",
               }}
             >
               {tag}
@@ -59,6 +69,14 @@ function VideoBox({ video }) {
       ) : (
         <></>
       )}
+      <Grid
+        sx={{
+          position: "relative",
+          paddingLeft: "1%",
+        }}
+      >
+        🎵 {video.song.name}
+      </Grid>
       <Grid
         sx={{
           position: "relative",
