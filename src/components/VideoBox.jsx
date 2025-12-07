@@ -1,8 +1,17 @@
-import { Box, Container, Grid, Paper } from "@mui/material";
+import { Chip, createTheme, Grid, Stack, TextField } from "@mui/material";
+import { green } from "@mui/material/colors";
 function VideoBox({ video }) {
   if (!video) {
     return;
   }
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: green[500],
+      },
+    },
+  });
   return (
     <Grid
       container
@@ -30,7 +39,7 @@ function VideoBox({ video }) {
           wordWrap: "break-word",
         }}
       >
-        {video.description}
+        <TextField fullWidth multiline value={video.description}></TextField>
       </Grid>
       {video.tags ? (
         <Grid
@@ -43,28 +52,12 @@ function VideoBox({ video }) {
             flexDirection: "row",
           }}
         >
-          {video.tags.map((tag) => (
-            <Grid
-              sx={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                px: "8px",
-                py: "2px",
-                marginRight: "6px",
-                color: "white",
-                backgroundColor: "transparent",
-                border: "1px solid rgba(255, 255, 255, 0.5)",
-                borderRadius: "20px",
-                fontSize: "1.5vh",
-                fontWeight: "600",
-                width: "auto",
-                height: "auto",
-              }}
-            >
-              {tag}
-            </Grid>
-          ))}
+          {" "}
+          <Stack direction={"row"} sx={{ flexWrap: "wrap" }}>
+            {video.tags.map((tag) => (
+              <Chip label={tag}></Chip>
+            ))}
+          </Stack>
         </Grid>
       ) : (
         <></>
