@@ -13,6 +13,11 @@ function VideoBox({ video }) {
   }
 
   const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#f3efef",
+      },
+    },
     components: {
       MuiTextField: {
         styleOverrides: {
@@ -95,7 +100,7 @@ function VideoBox({ video }) {
             {" "}
             <Stack direction={"row"} sx={{ flexWrap: "wrap" }}>
               {video.tags.map((tag) => (
-                <Chip label={tag}></Chip>
+                <Chip label={tag} color="primary" variant="outlined"></Chip>
               ))}
             </Stack>
           </Grid>
