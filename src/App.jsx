@@ -25,18 +25,18 @@ function App() {
 
   return (
     <VideoProvider>
-      <Grid container display={"flex"} flexDirection={"column"} gap={"2vh"}>
-        <Grid container>
-          <Grid item>
-            <TagProvider>
+      <TagProvider>
+        <Grid container display={"flex"} flexDirection={"column"} gap={"2vh"}>
+          <Grid container>
+            <Grid item>
               <VideoFilter></VideoFilter>
-            </TagProvider>
+            </Grid>
+          </Grid>
+          <Grid container display={"flex"} flexDirection={"column"} gap={"2vh"}>
+            <VideoList />
           </Grid>
         </Grid>
-        <Grid container display={"flex"} flexDirection={"column"} gap={"2vh"}>
-          <VideoList />
-        </Grid>
-      </Grid>
+      </TagProvider>
     </VideoProvider>
   );
 }

@@ -3,19 +3,30 @@ import {
   ClickAwayListener,
   createTheme,
   Grid,
+  Menu,
+  MenuItem,
   Stack,
   TextField,
   ThemeProvider,
+  Paper,
 } from "@mui/material";
-import { green } from "@mui/material/colors";
-import { useState } from "react";
+import { useState, useRef, useMemo } from "react";
+import { useTagProvider } from "../providers/TagProvider";
 
 function VideoBox({ video }) {
   const [data, setData] = useState(video);
   const [update, setUpdate] = useState(false);
-  if (!video) {
-    return;
-  }
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [tagFilter, setTagFilter] = useState("");
+  const { tags, setTags } = useTagProvider();
+  const plusChipRef = useRef(null);
+
+  if (!video) return null;
+
+  const filteredTags = useMemo(() => {
+    const f = tagFilter.toLowerCase();
+    return tags.filter((t) => t.toLowerCase().includes(f));
+  }, [tagFilter]);
 
   const theme = createTheme({
     palette: {
@@ -58,7 +69,13 @@ function VideoBox({ video }) {
 
   return (
     <ThemeProvider theme={theme}>
-      <ClickAwayListener onClickAway={() => setUpdate(false)}>
+      <ClickAwayListener
+        onClickAway={() => {
+          setUpdate(false);
+          setMenuOpen(false);
+          setTagFilter("");
+        }}
+      >
         <Grid
           container
           onClick={() => setUpdate(true)}
@@ -66,8 +83,6 @@ function VideoBox({ video }) {
             display: "flex",
             position: "relative",
             flexDirection: "column",
-            flexWrap: "nowrap",
-            alignItems: "flex-start",
             backgroundColor: update
               ? "rgba(99, 99, 99, 0.31)"
               : "rgba(99, 99, 99, 0.14)",
@@ -78,93 +93,126 @@ function VideoBox({ video }) {
             rowGap: "1vh",
           }}
         >
-          <Grid
-            sx={{
-              position: "relative",
-              width: "100%",
-              display: "inline-block",
-              textAlign: "left",
-              fontSize: "2.5vh",
-              flex: "1 1 auto",
-              wordWrap: "break-word",
-            }}
-          >
-            <TextField
-              fullWidth
-              spellCheck={false}
-              multiline
-              value={data.description}
-              onChange={(text) => {
-                setData({
-                  ...data,
-                  description: text.target.value,
-                });
-              }}
-            ></TextField>
-          </Grid>
-          {data.tags ? (
-            <Grid
-              sx={{
-                position: "relative",
-                width: "100%",
-                display: "flex",
-                paddingLeft: "1%",
-                alignItems: "flex-start",
-                flexDirection: "row",
-              }}
-            >
-              <Stack
-                direction={"row"}
-                sx={{ flexWrap: "wrap", columnGap: "5px", rowGap: "5px" }}
-              >
+          {/* DESCRIPTION */}
+          <TextField
+            fullWidth
+            multiline
+            spellCheck={false}
+            value={data.description}
+            onChange={(e) => setData({ ...data, description: e.target.value })}
+          />
+
+          {/* TAGS */}
+          {data.tags && (
+            <Grid sx={{ width: "100%", paddingLeft: "1%" }}>
+              <Stack direction="row" sx={{ flexWrap: "wrap", gap: "5px" }}>
                 {data.tags.map((tag, i) => (
                   <Chip
                     key={i}
                     label={tag}
                     color="primary"
                     variant="outlined"
-                    onDelete={() => {
-                      setData((prev) => ({
-                        ...prev,
-                        tags: prev.tags.filter((t) => t !== tag),
-                      }));
-                    }}
+                    onDelete={
+                      update
+                        ? () =>
+                            setData((prev) => ({
+                              ...prev,
+                              tags: prev.tags.filter((t) => t !== tag),
+                            }))
+                        : undefined
+                    }
                   />
                 ))}
+
+                {update && (
+                  <>
+                    <Chip
+                      ref={plusChipRef}
+                      label="+"
+                      color="primary"
+                      variant="outlined"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setMenuOpen(true);
+                      }}
+                      sx={{ cursor: "pointer" }}
+                    />
+
+                    <Menu
+                      anchorEl={plusChipRef.current}
+                      open={menuOpen}
+                      onClose={() => {
+                        setMenuOpen(false);
+                        setTagFilter("");
+                      }}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left",
+                      }}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "left",
+                      }}
+                    >
+                      <Paper sx={{ px: 1, pt: 1 }} elevation={0}>
+                        <TextField
+                          autoFocus
+                          value={tagFilter}
+                          onChange={(e) => setTagFilter(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" && tagFilter.trim()) {
+                              const value = tagFilter.trim();
+                              setData((prev) => ({
+                                ...prev,
+                                tags: prev.tags.includes(value)
+                                  ? prev.tags
+                                  : [...prev.tags, value],
+                              }));
+                              setTagFilter("");
+                              setMenuOpen(false);
+                            }
+                          }}
+                        />
+                      </Paper>
+
+                      {filteredTags.map((tag) => (
+                        <MenuItem
+                          key={tag}
+                          disabled={data.tags.includes(tag)}
+                          onClick={() => {
+                            setData((prev) => ({
+                              ...prev,
+                              tags: [...prev.tags, tag],
+                            }));
+                            setTagFilter("");
+                            setMenuOpen(false);
+                          }}
+                        >
+                          {tag}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </>
+                )}
               </Stack>
             </Grid>
-          ) : (
-            <></>
           )}
-          <Grid
-            sx={{
-              position: "relative",
-              paddingLeft: "1%",
-            }}
-          >
+          <Grid sx={{ display: "flex", paddingLeft: "1%" }}>
             🎵 {data.song.name}
           </Grid>
           <Grid
             sx={{
-              position: "relative",
               width: "100%",
-              height: "80%",
               display: "flex",
               justifyContent: "center",
-              flex: "1 1 auto",
             }}
           >
             <video
               muted
               controls
-              style={{
-                maxWidth: "100%",
-                width: "auto",
-                height: "auto",
-                objectFit: "contain",
-              }}
               src={data.src}
-            ></video>
+              style={{ maxWidth: "100%", objectFit: "contain" }}
+            />
           </Grid>
         </Grid>
       </ClickAwayListener>
