@@ -10,8 +10,9 @@ import {
   ThemeProvider,
   Paper,
 } from "@mui/material";
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import { useTagProvider } from "../providers/TagProvider";
+import { useVideoProvider } from "../providers/VideoProvider";
 
 function VideoBox({ video }) {
   const [data, setData] = useState(video);
@@ -21,7 +22,17 @@ function VideoBox({ video }) {
   const { tags, setTags } = useTagProvider();
   const plusChipRef = useRef(null);
 
+  const { updateVideo } = useVideoProvider();
+  const isMounted = useRef(false);
   if (!video) return null;
+  useEffect(() => {
+    if (!isMounted.current && update) {
+      isMounted.current = true;
+      return;
+    }
+
+    console.log(updateVideo(data));
+  }, [update]);
 
   const filteredTags = useMemo(() => {
     const f = tagFilter.toLowerCase();

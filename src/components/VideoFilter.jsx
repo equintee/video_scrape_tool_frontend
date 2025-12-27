@@ -26,9 +26,10 @@ function VideoFilter() {
     fetch("http://localhost:8080?" + params.toString())
       .then((response) => response.json())
       .then((data) => {
-        const temp = [];
+        const videos = [];
         data.forEach((video) => {
-          temp.push({
+          videos.push({
+            id: video.id,
             title: video.name,
             description: video.description,
             tags: video.tags,
@@ -36,7 +37,7 @@ function VideoFilter() {
             src: "http://localhost:8080/chunk?contentId=" + video.content_url,
           });
         });
-        setVideos(temp);
+        setVideos(videos);
       });
   }, [description, selectedTags]);
   return (
