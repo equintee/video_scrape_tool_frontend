@@ -11,7 +11,7 @@ import {
   Paper,
 } from "@mui/material";
 import { useState, useRef, useMemo, useEffect } from "react";
-import { useTagProvider } from "../providers/TagProvider";
+import { useFilterProvider } from "../providers/FilterProvider";
 import { useVideoProvider } from "../providers/VideoProvider";
 
 function VideoBox({ video }) {
@@ -19,7 +19,7 @@ function VideoBox({ video }) {
   const [update, setUpdate] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [tagFilter, setTagFilter] = useState("");
-  const { tags, setTags } = useTagProvider();
+  const { tags, setTags } = useFilterProvider();
   const plusChipRef = useRef(null);
 
   const { updateVideo } = useVideoProvider();
@@ -221,7 +221,7 @@ function VideoBox({ video }) {
             <video
               muted
               controls
-              src={data.src}
+              src={"http://localhost:8080/chunk?contentId=" + data.src}
               style={{ maxWidth: "100%", objectFit: "contain" }}
             />
           </Grid>

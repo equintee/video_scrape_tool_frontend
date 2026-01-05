@@ -3,7 +3,7 @@ import VideoBox from "./components/VideoBox";
 import { Box, Container, Grid, Paper } from "@mui/material";
 import VideoFilter from "./components/VideoFilter";
 import { useVideoProvider, VideoProvider } from "./providers/VideoProvider";
-import { TagProvider, useTagProvider } from "./providers/TagProvider";
+import { FilterProvider, useFilterProvider } from "./providers/FilterProvider";
 
 function App() {
   function VideoList() {
@@ -15,7 +15,7 @@ function App() {
     return (
       <>
         {videos.map((video, index) => (
-          <Grid item key={index}>
+          <Grid item key={video.id}>
             <VideoBox video={video} />
           </Grid>
         ))}
@@ -25,7 +25,7 @@ function App() {
 
   return (
     <VideoProvider>
-      <TagProvider>
+      <FilterProvider>
         <Grid container display={"flex"} flexDirection={"column"} gap={"2vh"}>
           <Grid container>
             <Grid item>
@@ -36,7 +36,7 @@ function App() {
             <VideoList />
           </Grid>
         </Grid>
-      </TagProvider>
+      </FilterProvider>
     </VideoProvider>
   );
 }

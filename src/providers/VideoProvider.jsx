@@ -21,8 +21,36 @@ export const VideoProvider = ({ children }) => {
       },
     });
   }, []);
+
+  const addVideo = useCallback((source) => {
+    fetch("http://localhost:8080", {
+      method: "POST",
+      body: JSON.stringify({
+        source: source,
+        type: "twitter",
+      }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(pirt);
+        }
+        return response.json();
+      })
+      .then((video) => {
+        setVideos((prev) => [
+          {
+            ...video,
+            src: video.content_url,
+          },
+          ...prev,
+        ]);
+      });
+  });
   return (
-    <VideoContext.Provider value={{ videos, setVideos, updateVideo }}>
+    <VideoContext.Provider value={{ videos, setVideos, updateVideo, addVideo }}>
       {children}
     </VideoContext.Provider>
   );
