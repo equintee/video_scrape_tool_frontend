@@ -1,4 +1,4 @@
-import { FormLabel, Grid, Select } from "@mui/material";
+import { FormLabel, Grid, Select, FormHelperText } from "@mui/material";
 import { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
@@ -26,35 +26,45 @@ function VideoFilter() {
   };
 
   useEffect(() => {
-    const urlRegex = /[A-z]+.com/;
-    if (urlRegex.test(description)) {
-      addVideo(description);
-      setDescription("");
-      return;
-    }
+  const urlRegex = /[A-z]+\.com/;
 
-    const params = new URLSearchParams({
-      description: description,
-      tags: selectedTags,
-      songs: selectedSongs,
+  if (urlRegex.test(description)) {
+    addVideo(description);
+    setDescription("");
+    return;
+  }
+
+  const params = new URLSearchParams();
+
+  if (description) {
+    params.append("description", description);
+  }
+
+  selectedTags.forEach((tag) => {
+    params.append("tags", tag); // 👈 repeated params
+  });
+
+  selectedSongs.forEach((song) => {
+    params.append("songs", song); // 👈 repeated params
+  });
+
+  fetch(`http://localhost:8080?${params.toString()}`)
+    .then((response) => response.json())
+    .then((data) => {
+      const videos = data.map((video) => ({
+        id: video.id,
+        title: video.name,
+        description: video.description,
+        tags: video.tags,
+        song: video.song,
+        src: video.content_url,
+      }));
+
+      setVideos(videos);
     });
-    fetch("http://localhost:8080?" + params.toString())
-      .then((response) => response.json())
-      .then((data) => {
-        const videos = [];
-        data.forEach((video) => {
-          videos.push({
-            id: video.id,
-            title: video.name,
-            description: video.description,
-            tags: video.tags,
-            song: video.song,
-            src: video.content_url,
-          });
-        });
-        setVideos(videos);
-      });
-  }, [description, selectedTags, selectedSongs]);
+}, [description, selectedTags, selectedSongs]);
+
+
   return (
     <Grid
       container
@@ -67,15 +77,16 @@ function VideoFilter() {
     >
       <Grid xs={12}>
         <TextField
-          label="Description"
+          label="Paste link or enter description"
           sx={{ background: "#EFF3EC" }}
-          style={{ width: "24vh" }}
+          style={{ width: "50vh" }}
           onChange={(value) => setDescription(value.target.value)}
           value={description}
         ></TextField>
       </Grid>
       <Grid>
         <Select
+          label="Tags"
           style={{ width: "24vh" }}
           multiple
           value={selectedTags}
@@ -91,7 +102,7 @@ function VideoFilter() {
       </Grid>
       <Grid>
         <Select
-          style={{ width: "50vh" }}
+          style={{ width: "24vh" }}
           multiple
           value={selectedSongs}
           onChange={handleSongChange}
